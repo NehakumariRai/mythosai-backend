@@ -1,18 +1,28 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+import os
+from dotenv import load_dotenv
 import requests
 import re
 import json
 
 app = FastAPI()
 
+
+
+
+
+
+
 @app.get("/")
 def home():
     return {"message": "API is running!"}
 
-# OpenRouter API Key
-API_KEY = "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"
-MODEL_ID = "deepseek/deepseek-r1-distill-qwen-14b:free"
+    load_dotenv()  # Load environment variables
+
+API_KEY = os.getenv("OPENROUTER_API_KEY")
+MODEL_ID = os.getenv("MODEL_ID")
+
 
 # Store user session data
 session_story = {}
