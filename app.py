@@ -1,28 +1,18 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import os
-from dotenv import load_dotenv
 import requests
 import re
 import json
 
+# ✅ Hardcoded API Key and Model ID
+API_KEY = "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"
+MODEL_ID = "deepseek/deepseek-r1-distill-qwen-14b:free"
+
 app = FastAPI()
-
-
-
-
-
-
 
 @app.get("/")
 def home():
     return {"message": "API is running!"}
-
-    load_dotenv()  # Load environment variables
-
-API_KEY = os.getenv("OPENROUTER_API_KEY")
-MODEL_ID = os.getenv("MODEL_ID")
-
 
 # Store user session data
 session_story = {}
@@ -59,13 +49,13 @@ def generate_plots(user_id, user_input, previous_story=""):
     response = requests.post(
         url="https://openrouter.ai/api/v1/chat/completions",
         headers={"Authorization": f"Bearer {API_KEY}"},
-        data=json.dumps({
+        json={
             "model": MODEL_ID,
             "messages": [{"role": "user", "content": prompt}],
             "max_tokens": 600,
             "temperature": 0.8,
             "top_p": 0.9,
-        })
+        }
     )
 
     if response.status_code == 200:
@@ -117,4 +107,3 @@ def save_story(request: SaveRequest):
     del user_initial_input[user_id]
 
     return {"final_story": final_story}
-
