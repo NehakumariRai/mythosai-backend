@@ -6,8 +6,12 @@ import json
 
 app = FastAPI()
 
+@app.get("/")
+def home():
+    return {"message": "API is running!"}
+
 # OpenRouter API Key
-API_KEY = "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"
+API_KEY = "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"
 MODEL_ID = "deepseek/deepseek-r1-distill-qwen-14b:free"
 
 # Store user session data
